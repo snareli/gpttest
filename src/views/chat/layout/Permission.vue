@@ -200,7 +200,7 @@ async function handleResetPassword() {
 </script>
 
 <template>
-  <NModal :show="visible" style="width: 90%; max-width: 440px" preset="card">
+  <NModal :show="visible" style="width: 95%; max-width: 440px">
     <div class="p-10 bg-white rounded dark:bg-slate-800">
       <div class="space-y-4">
         <header class="space-y-2">
@@ -237,7 +237,7 @@ async function handleResetPassword() {
             </NButton>
           </NTabPane>
 
-          <NTabPane name="resetPassword" :tab="$t('common.resetPassword')">
+          <!-- <NTabPane name="resetPassword" :tab="$t('common.resetPassword')">
             <NInput v-model:value="username" :disabled="sign !== undefined" type="text" :placeholder="$t('common.email')" class="mb-2" />
             <NInput v-if="!!sign" v-model:value="password" type="password" :placeholder="$t('common.password')" class="mb-2" @input="handlePasswordInput" />
             <NInput
@@ -254,7 +254,7 @@ async function handleResetPassword() {
             <NButton v-else block type="primary" :disabled="disabled || password !== confirmPassword" :loading="loading" @click="handleResetPassword">
               {{ $t('common.resetPassword') }}
             </NButton>
-          </NTabPane>
+          </NTabPane> -->
         </NTabs>
         <!-- End Tabs -->
       </div>
