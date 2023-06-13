@@ -38,12 +38,12 @@ const showModal = ref(false)
       <p class="text-xl to-blue-800">此网站为个人测试使用，不保证稳定性！</p>
       <h2 class="text-xl font-bold">初次使用</h2>
       <p class="font-bold">如果你认识作者</p>
-      <p>使用邮箱（推荐qq邮箱）注册后，微信QQ私聊我，等待我审核，通过后即可登录</p>
+      <p>使用QQ邮箱注册后，微信QQ私聊我，等待我审核，通过后即可登录</p>
       <p class="font-bold">如果你不认识作者</p>
-      <p>使用邮箱（推荐qq邮箱）注册后，给我发邮件(1320616682@qq.com)，注明你的<strong>注册邮箱和了解渠道（例如朋友推荐）</strong>,等待审核</p>
+      <p>加入QQ群813665832，注明你的<strong>注册邮箱和了解渠道（例如朋友推荐）</strong>,等待审核</p>
       <h2 class="font-bold">作者联系方式：</h2>
       <p>QQ：1320616682</p>
-      <NButton @click="showModal = true">打赏作者</NButton>
+      <NButton type="primary" @click="showModal = true">打赏作者</NButton>
     </div>
   </NModal>
 
@@ -52,9 +52,11 @@ const showModal = ref(false)
       关闭
     </template>
     <div class="text-center">
-      <h2 class="text-xl">你人真好</h2>
-      <!-- 设置图片大小 -->
-      <img src="@/../public/zanshang.jpg" alt="" width="300" height="300">
+      <h2 class="text-sm">至今平原客，感激慕清风</h2>
+      <div>
+        <img src="@/../public/zanshang.jpg" alt="" width="300" height="300">
+      </div>
+
     </div>
 
   </n-modal>
