@@ -14,7 +14,8 @@ const authStore = useAuthStore()
 const { isMobile } = useBasicLayout()
 const showPermission = ref(false)
 
-const needPermission = computed(() => !!authStore.session?.auth && !authStore.token && (isMobile.value || showPermission.value))
+// const needPermission = computed(() => !!authStore.session?.auth && !authStore.token && (isMobile.value || showPermission.value))
+const needPermission = computed(() => !!authStore.session?.auth && !authStore.token )
 
 const userInfo = computed(() => userStore.userInfo)
 
@@ -60,7 +61,6 @@ onMounted(async () => {
   <!-- 弹窗 -->
   <NModal v-model:show="showPopUp" style="width: 100%; max-width: 600px;" preset="card">
     <div class="space-y-4">
-      <p class="text-xl to-blue-800">此网站为个人测试使用，不保证稳定性！</p>
       <h2 class="text-xl font-bold">初次使用</h2>
       <p class="font-bold">如果你认识作者</p>
       <p>使用QQ邮箱注册后，微信QQ私聊我，等待我审核，通过后即可登录</p>
