@@ -5,22 +5,22 @@ import { useRoute, useRouter } from 'vue-router'
 import { fetchLogin, fetchRegister, fetchResetPassword, fetchSendResetMail, fetchVerify, fetchVerifyAdmin } from '@/api'
 import { useAuthStore } from '@/store'
 
-interface Props {
-  visible: boolean
-}
+// interface Props {
+//   visible: boolean
+// }
 
-const props = defineProps<Props>()
+// const props = defineProps<Props>()
 
-const emit = defineEmits<Emit>()
+// const emit = defineEmits<Emit>()
 
-interface Emit {
-  (e: 'update:visible', visible: boolean): void
-}
+// interface Emit {
+//   (e: 'update:visible', visible: boolean): void
+// }
 
-const show = computed({
-  get: () => props.visible,
-  set: (visible: boolean) => emit('update:visible', visible),
-})
+// const show = computed({
+//   get: () => props.visible,
+//   set: (visible: boolean) => emit('update:visible', visible),
+// })
 
 const route = useRoute()
 const router = useRouter()
@@ -50,18 +50,26 @@ const confirmPasswordStatus = computed(() => {
   return password.value !== confirmPassword.value ? 'error' : 'success'
 })
 
+const visible = ref(false)
+const showPopUp = ref(false)
+
 onMounted(async () => {
-  const verifytoken = route.query.verifytoken as string
-  await handleVerify(verifytoken)
-  const verifytokenadmin = route.query.verifytokenadmin as string
-  await handleVerifyAdmin(verifytokenadmin)
-  sign.value = route.query.verifyresetpassword as string
-  if (sign.value) {
-    username.value = sign.value.split('-')[0].split('|')[0]
-    activeTab.value = 'resetPassword'
-    show.value = true
+  // const verifytoken = route.query.verifytoken as string
+  // await handleVerify(verifytoken)
+  // const verifytokenadmin = route.query.verifytokenadmin as string
+  // await handleVerifyAdmin(verifytokenadmin)
+  // sign.value = route.query.verifyresetpassword as string
+  // if (sign.value) {
+  //   username.value = sign.value.split('-')[0].split('|')[0]
+  //   activeTab.value = 'resetPassword'
+  //   show.value = true
+  // }
+  if (!!authStore.session?.auth && !authStore.token) {
+    visible.value = true
+    showPopUp.value = true
   }
-})
+},
+)
 
 async function handleVerify(verifytoken: string) {
   if (!verifytoken)
@@ -200,7 +208,7 @@ async function handleResetPassword() {
 </script>
 
 <template>
-  <NModal :show="visible" style="width: 95%; max-width: 440px">
+  <NModal v-model:show="visible" preset="card" style="width: 95%; max-width: 440px">
     <div class="p-10 bg-white rounded dark:bg-slate-800">
       <div class="space-y-4">
         <header class="space-y-2">
@@ -213,26 +221,34 @@ async function handleResetPassword() {
         <NTabs v-model:value="activeTab" type="line">
           <NTabPane name="login" :tab="$t('common.login')">
             <NInput v-model:value="username" type="text" :placeholder="$t('common.email')" class="mb-2" />
-            <NInput v-model:value="password" type="password" :placeholder="$t('common.password')" class="mb-2" @keypress="handlePress" />
+            <NInput
+              v-model:value="password" type="password" :placeholder="$t('common.password')" class="mb-2"
+              @keypress="handlePress"
+            />
 
             <NButton block type="primary" :disabled="disabled" :loading="loading" @click="handleLogin">
               {{ $t('common.login') }}
             </NButton>
           </NTabPane>
 
-          <NTabPane v-if="authStore.session && authStore.session.allowRegister" name="register" :tab="$t('common.register')">
+          <NTabPane
+            v-if="authStore.session && authStore.session.allowRegister" name="register"
+            :tab="$t('common.register')"
+          >
             <NInput v-model:value="username" type="text" :placeholder="$t('common.email')" class="mb-2" />
-            <NInput v-model:value="password" type="password" :placeholder="$t('common.password')" class="mb-2" @input="handlePasswordInput" />
             <NInput
-              v-if="showConfirmPassword"
-              v-model:value="confirmPassword"
-              type="password"
-              :placeholder="$t('common.passwordConfirm')"
-              class="mb-4"
-              :status="confirmPasswordStatus"
+              v-model:value="password" type="password" :placeholder="$t('common.password')" class="mb-2"
+              @input="handlePasswordInput"
+            />
+            <NInput
+              v-if="showConfirmPassword" v-model:value="confirmPassword" type="password"
+              :placeholder="$t('common.passwordConfirm')" class="mb-4" :status="confirmPasswordStatus"
             />
 
-            <NButton block type="primary" :disabled="disabled || password !== confirmPassword" :loading="loading" @click="handleRegister">
+            <NButton
+              block type="primary" :disabled="disabled || password !== confirmPassword" :loading="loading"
+              @click="handleRegister"
+            >
               {{ $t('common.register') }}
             </NButton>
           </NTabPane>
@@ -258,6 +274,27 @@ async function handleResetPassword() {
         </NTabs>
         <!-- End Tabs -->
       </div>
+    </div>
+  </NModal>
+
+  <!-- 弹窗 -->
+  <NModal v-model:show="showPopUp" style="width: 100%; max-width: 600px;" preset="card">
+    <div class="space-y-4">
+      <h2 class="text-xl font-bold">
+        初次使用
+      </h2>
+      <p class="font-bold">
+        如果你认识作者
+      </p>
+      <p>使用QQ邮箱注册后，微信QQ私聊我，等待我审核，通过后即可登录</p>
+      <p class="font-bold">
+        如果你不认识作者
+      </p>
+      <p>加入QQ群813665832，注明你的<strong>注册邮箱和了解渠道（例如朋友推荐）</strong>,等待审核</p>
+      <h2 class="font-bold">
+        作者联系方式：
+      </h2>
+      <p>QQ：1320616682</p>
     </div>
   </NModal>
 </template>
